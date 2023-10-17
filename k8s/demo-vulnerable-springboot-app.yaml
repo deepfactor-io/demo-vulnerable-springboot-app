@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-vulnerale-springboot-app
+  name: demo-vulnerable-springboot-app
   labels:
-    app: demo-vulnerale-springboot-app
+    app: demo-vulnerable-springboot-app
 spec:
   type: NodePort
   ports:
@@ -12,23 +12,23 @@ spec:
     targetPort: 3000
     name: client
   selector:
-    app: demo-vulnerale-springboot-app
+    app: demo-vulnerable-springboot-app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-vulnerale-springboot-app
+  name: demo-vulnerable-springboot-app
   labels:
-    app: demo-vulnerale-springboot-app
+    app: demo-vulnerable-springboot-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-vulnerale-springboot-app
+      app: demo-vulnerable-springboot-app
   template:
     metadata:
       labels:
-        app: demo-vulnerale-springboot-app
+        app: demo-vulnerable-springboot-app
         test: web-c-app
       annotations:
         #df.k8-app.name: "C++ Application"
@@ -42,10 +42,10 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - demo-vulnerale-springboot-app
+                      - demo-vulnerable-springboot-app
               topologyKey: "kubernetes.io/hostname"
       containers:
-        - name: demo-vulnerale-springboot-app
+        - name: demo-vulnerable-springboot-app
           image: "public.ecr.aws/deepfactor/demoapps/dvsba:1.0.0"
           imagePullPolicy: Always
       imagePullSecrets:
