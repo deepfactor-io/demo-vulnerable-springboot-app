@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-vulnerale-springboot-app
+  labels:
+    app: demo-vulnerale-springboot-app
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: client
+  selector:
+    app: demo-vulnerale-springboot-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-vulnerale-springboot-app
+  labels:
+    app: demo-vulnerale-springboot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-vulnerale-springboot-app
+  template:
+    metadata:
+      labels:
+        app: demo-vulnerale-springboot-app
+        test: web-c-app
+      annotations:
+        #df.k8-app.name: "C++ Application"
+        #df.k8-app.alert/policy: "Compiled Languages"
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - demo-vulnerale-springboot-app
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: demo-vulnerale-springboot-app
+          image: "public.ecr.aws/deepfactor/demoapps/dvsba:1.0.0"
+          imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred 
