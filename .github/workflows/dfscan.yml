@@ -35,5 +35,5 @@ jobs:
             repoVersion=${{ github.ref_name }}
           fi
           echo $GITHUB_WORKSPACE
-          echo ${{ github.workspace }}
-          docker run --pull=always --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $PROJDIR
+          ls ${{ github.workspace }}
+          docker run --pull=always --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v $PROJDIR:/home/projdir -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $/home/projdir
