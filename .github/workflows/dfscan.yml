@@ -27,6 +27,7 @@ jobs:
           DF_RUN_TOKEN: ${{ secrets.DFSCAN_TOKEN }}
           APP_NAME: ${{ github.event.repository.name }}
           COMP_NAME: ${{ github.base_ref }}
+          PROJDIR: ${{ github.workspace }}
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             repoVersion=${{ github.head_ref }}
@@ -35,4 +36,4 @@ jobs:
           fi
           echo $GITHUB_WORKSPACE
           echo ${{ github.workspace }}
-          docker run --pull=always --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $GITHUB_WORKSPACE
+          docker run --pull=always --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $PROJDIR
