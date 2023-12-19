@@ -8,7 +8,7 @@ on:
         default: '3.4.0-2468'
   pull_request:
     branches: [master]
-    types: [review_requested]
+    types: [opened, reopened]
 jobs:
   Build:
     runs-on: ubuntu-latest
@@ -33,4 +33,4 @@ jobs:
           else
             repoVersion=${{ github.ref_name }}
           fi
-          docker run --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  dockerrepo.corp.deepfactor.io:8443/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $GITHUB_WORKSPACE
+          docker run --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  public.ecr.aws/deepfactor/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $GITHUB_WORKSPACE
