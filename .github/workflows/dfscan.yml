@@ -1,0 +1,36 @@
+name: dfctl scan
+
+on:
+  pull_request:
+    inputs: 
+      branches: [main]
+      dfctlversion:
+        description: 'dfctl version to use'
+        required: true
+        default: '3.4.0-2468'
+     types: [review_requested]
+
+jobs:
+  Build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: scan filesystem with dfctl
+        env: 
+          DFCTL_VERSION: "${{ github.event.inputs.dfctlversion }}"
+          DF_RUN_TOKEN: ${{ secrets.DFSCAN_TOKEN }}
+          # The short ref name of the branch that triggered the workflow run
+          repoVersion: $GITHUB_REF_NAME
+          # Source branch of the PR in a workflow run
+          repoVersion: $GITHUB_HEAD_REF
+          APP_NAME: ${{ github.event.repository.name }}
+          COMP_NAME: $GITHUB_BASE_REF
+        run: |
+          docker run --rm -e DF_RUN_TOKEN=$DF_RUN_TOKEN -v /var/run/docker.sock:/var/run/docker.sock  dockerrepo.corp.deepfactor.io:8443/df/runtime:$DFCTL_VERSION dfctl scan -s fs -a $APP_NAME -c $APP_NAME -V $repoVersion $GITHUB_WORKSPACE
