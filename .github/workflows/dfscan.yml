@@ -23,7 +23,7 @@ jobs:
 
       - name: scan filesystem with dfctl
         env: 
-          DFCTL_VERSION: ${{ github.event.inputs.dfctlversion || 'default_version' }}
+          DFCTL_VERSION: ${{ github.event.inputs.dfctlversion || 'latest' }}
           DF_RUN_TOKEN: ${{ secrets.DFSCAN_TOKEN }}
           APP_NAME: ${{ github.event.repository.name }}
           COMP_NAME: ${{ github.base_ref }}
