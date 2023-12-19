@@ -1,4 +1,4 @@
-name: dfctl scan
+name: dfctl-scan
 
 on:
   pull_request:
