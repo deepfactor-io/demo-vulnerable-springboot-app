@@ -10,7 +10,7 @@ on:
         description: "Deepfactor alert policy"
         required: false
   pull_request:
-    branches: [master]
+    branches: [1.0-GA]
     types: [opened, reopened]
 jobs:
   Build:
